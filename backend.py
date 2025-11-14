@@ -53,6 +53,7 @@ def text_to_binary(text):
 	binary_text = "".join(list_binary_chars)
 	# Version Giga Chad
 	# binary_text = "".join([bin(ord(char))[2:].zfill(21) for char in text]) 
+
 	return binary_text
 
 
@@ -73,25 +74,46 @@ def watermark_lsb1(image_path, text):
 
 	binary_text = text_to_binary(text)
 
+
 	original_image_shape = image_array.shape
 
 	flatten_image_array = even_image_array.flatten()
+
 
 	for index, bit in enumerate(binary_text):
 		if bit == "1":
 			flatten_image_array[index] += 1
 
 	watermarked_image_array = flatten_image_array.reshape(original_image_shape)
-	watermarked_image = Image.fromarray(image_array)
+
+	# watermarked_image = Image.fromarray(image_array, mode="RGB") # problème
 	
-
-	return watermarked_image
-
+	return watermarked_image_array
 
 
 
+def get_text_from_watermarked_image(watermarked_image_array):
+	# watermarked_image_array = numpy.array(watermarked_image)
+	watermarked_flattened_image_array = watermarked_image_array.flatten()
+
+	binary_text_array = watermarked_flattened_image_array % 2
+
+	original_list_of_chars = []
+	for index in range(0, len(binary_text_array), 21):
+		current_binary_sequence = binary_text_array[index: index+21]
+
+		current_binary_str = "".join([str(bit) for bit in current_binary_sequence])
+
+		current_ordinal = int(current_binary_str, 2)
+		if current_ordinal == 0:
+			break
+
+		current_char = chr(current_ordinal)
+		original_list_of_chars.append(current_char)
 
 
+	original_text = "".join(original_list_of_chars)
+	return original_text
 
 
 if __name__ == "__main__":
@@ -115,5 +137,6 @@ if __name__ == "__main__":
 
 
 
-	watermarked_image = watermark_lsb1("image.jpeg", text=message)
-	watermarked_image.show()
+	watermarked_image_array = watermark_lsb1("image.jpeg", text=message)
+	original_text = get_text_from_watermarked_image(watermarked_image_array)
+	print(original_text)
