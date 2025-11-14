@@ -70,6 +70,12 @@ def convert_image_to_array(image):
 	return image_array
 
 
+def convert_array_to_image(image_array):
+	image = Image.fromarray(image_array)
+	return image
+
+
+
 def get_even_image_array(image_array):
 	even_image_array = image_array - image_array % 2
 	return even_image_array
@@ -97,9 +103,10 @@ if __name__ == "__main__":
 
 
 	image = read_image("image.jpeg")
-	# display_image(image)
+	display_image(image)
 	image_array = convert_image_to_array(image)
 	# print(image_array)
 
 	even_image_array = get_even_image_array(image_array)
-	print(even_image_array)
+	even_image = convert_array_to_image(even_image_array)
+	display_image(even_image)
