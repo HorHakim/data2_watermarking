@@ -41,18 +41,34 @@ def vigenere_cipher(text, password, cipher):
 	return crypted_text
 
 
+def text_to_binary(text):
+	list_binary_chars = []
+	for char in text :
+		list_binary_chars.append(bin(ord(char))[2:].zfill(21))
+
+	binary_text = "".join(list_binary_chars)
+	# Version Giga Chad
+	# binary_text = "".join([bin(ord(char))[2:].zfill(21) for char in text]) 
+	return binary_text
+
+
+
+
 if __name__ == "__main__":
 	message = "le chocolat est bon"
 
-	crypted_text = cesar_cipher(message, 12, cipher=True) # exo 1
-	print(crypted_text)
+	# crypted_text = cesar_cipher(message, 12, cipher=True) # exo 1
+	# print(crypted_text)
 
-	initial_message = cesar_cipher(crypted_text, 12, cipher=False) # exo 2
-	print(initial_message == message)
+	# initial_message = cesar_cipher(crypted_text, 12, cipher=False) # exo 2
+	# print(initial_message == message)
 
-	hack_cesar_cipher(crypted_text, alphabet=string.printable) # exo3
+	# hack_cesar_cipher(crypted_text, alphabet=string.printable) # exo3
 
-	crypted_message = vigenere_cipher(text=message, password="Azerty12345!", cipher=True)
-	print(crypted_message)
-	initial_message = vigenere_cipher(text=crypted_message, password="Azerty12345!", cipher=False)
-	print(initial_message)
+	# crypted_message = vigenere_cipher(text=message, password="Azerty12345!", cipher=True)
+	# print(crypted_message)
+	# initial_message = vigenere_cipher(text=crypted_message, password="Azerty12345!", cipher=False)
+	# print(initial_message)
+
+	binary_text = text_to_binary(text=message)
+	print(binary_text)
