@@ -1,4 +1,8 @@
+from PIL import Image
+import numpy
+
 import string
+
 
 def cesar_cipher(text, key, cipher):
 	if type(text) == str and type(key) == int:
@@ -52,6 +56,19 @@ def text_to_binary(text):
 	return binary_text
 
 
+def read_image(image_path):
+	image = Image.open(image_path)
+	return image
+
+
+def display_image(image):
+	image.show()
+
+
+def convert_image_to_array(image):
+	image_array = numpy.array(image)
+	return image_array
+
 
 
 if __name__ == "__main__":
@@ -70,5 +87,11 @@ if __name__ == "__main__":
 	# initial_message = vigenere_cipher(text=crypted_message, password="Azerty12345!", cipher=False)
 	# print(initial_message)
 
-	binary_text = text_to_binary(text=message)
-	print(binary_text)
+	# binary_text = text_to_binary(text=message)
+	# print(binary_text)
+
+
+	image = read_image("image.jpeg")
+	display_image(image)
+	image_array = convert_image_to_array(image)
+	print(image_array)
