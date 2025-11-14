@@ -56,29 +56,41 @@ def text_to_binary(text):
 	return binary_text
 
 
-def read_image(image_path):
-	image = Image.open(image_path)
-	return image
-
 
 def display_image(image):
 	image.show()
 
 
-def convert_image_to_array(image):
+
+
+
+
+
+def watermark_lsb1(image_path, text):
+	image = Image.open(image_path)
 	image_array = numpy.array(image)
-	return image_array
-
-
-def convert_array_to_image(image_array):
-	image = Image.fromarray(image_array)
-	return image
-
-
-
-def get_even_image_array(image_array):
 	even_image_array = image_array - image_array % 2
-	return even_image_array
+
+	binary_text = text_to_binary(text)
+
+	original_image_shape = image_array.shape
+
+	flatten_image_array = even_image_array.flatten()
+
+	for index, bit in enumerate(binary_text):
+		if bit == "1":
+			flatten_image_array[index] += 1
+
+	watermarked_image_array = flatten_image_array.reshape(original_image_shape)
+	watermarked_image = Image.fromarray(image_array)
+	
+
+	return watermarked_image
+
+
+
+
+
 
 
 
@@ -102,11 +114,6 @@ if __name__ == "__main__":
 	# print(binary_text)
 
 
-	image = read_image("image.jpeg")
-	display_image(image)
-	image_array = convert_image_to_array(image)
-	# print(image_array)
 
-	even_image_array = get_even_image_array(image_array)
-	even_image = convert_array_to_image(even_image_array)
-	display_image(even_image)
+	watermarked_image = watermark_lsb1("image.jpeg", text=message)
+	watermarked_image.show()
